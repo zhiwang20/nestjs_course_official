@@ -1,0 +1,197 @@
+- install nestjs
+  ~ npm i -g @nestjs/cli
+
+- check the version of nestjs
+  ~ nestjs --version
+
+- nestjs cli
+it's a compendium tool for nestjs that helps us to generate files, run, compile and even bundle our applications.
+
+- create a nestjs app
+  ~ nest new
+
+- main.ts
+the entire nestjs application starts with the main.ts file, its like the main starting file for the tipycal
+nodejs application.
+
+- AppModule
+AppModule module its the root module for the application containing everything itself that an app needs to
+run this root module can contain others modules there all different features and tunks themselfs, but when
+we brought together we get a complete application.
+
+- Decoratos
+are simple functions that apply logic.
+
+- Modular project architecture
+allow to group features such as routes, services, models into their own modules, and at the end this help us 
+maintaining a high level of reusability and testability.
+
+- generate nestjs controller
+  ~nest generate controller
+  ~nest g co
+  ~nest g co --no-spec
+  ~nest generate controller modules/abc --dry-run
+
+- @Res() response: Response 
+  its a decorator that allow to full control the response object of express... doing this is not fully
+  recommended because it decrese the compatibility with the framework.
+
+- @HttpCode(HttpStatus.GONE)
+  its a decorator that set the HttpCode code response for controller method... doing this is not fully
+  recommended because it decrese the compatibility with the framework.
+
+- Services
+Services are very important parts of nestjs applications as they help us separate our business logic from
+our controllers, separating out business logic helps make this logic reusable throughout multiple parts
+of our application.
+
+- generate nestjs service
+  ~nest generate service
+  ~nest g s
+  ~nest g s --no-spec
+
+- provider
+the main idea of a provider is that it can inject dependencies, this means that objects can create various
+relationships to each others, and the logic of wiring up instances of objects together can all be handled
+by the nest runtime system.
+
+- modules
+are strongly recommended as an efective way to organize the application components for most of nest apps
+and ideal architecture should employ multiple modules, each encapsulating a closely related set of capabilities
+
+- generate nestjs module
+  ~nest generate module <module's name>
+  ~nest g module <module's name>
+
+- Nest Modules contain 4 main things:
+  controllers - Which you can think of as our API Routes, that we want this module to instantiate.
+  
+  exports - Here we can list providers within this current module that should be made available 
+  anywhere this module is imported
+
+  imports - Just as we saw in the AppModule, the imports Array gives us the ability to list OTHER modules that
+  THIS module requires. Any exported providers of these imported modules are now fully available here as well.
+
+  providers - Here we’re going to list our services that need to be instantiated by the Nest injector.
+  Any providers here will be available only within “THIS” module itself, unless added to the exports array we
+  saw above.
+
+- DTO (Data Transfer object)
+is an object that is used to encasulate data and send it from on app to another, DTO's help us define the
+interfaces or input and output within our system.
+
+- generate nestjs DTO
+  ~nest g class coffees/dto/create-coffee.dto --no-spec
+
+- ValidationPipe
+its a tool that comes in nestjs to automatically validate the request, this tool provides a convenient way of
+enforcing validation rules all incoming client payloads.
+with the option whitelist: true it cleans the request payloads from non existing attributes in DTOs
+with forbidNonWhitelisted: true it throw an error when the request payloads has non existing attributes in DTOs
+with the option transform: true it'll transform the payload request in DTO instance automatically
+with transformOptions.enableImplicitConversion: true set the ValidationPipe no longer have to explicity specify types
+with the @Type() decorator
+
+- Entity in TypeORM
+it represent a relationship between a TypeScrpt class and database table
+
+- .forFeature()
+the use of forFeature() registers TypeORM in a child module
+- .forRoot()
+the use of forRoot() registers TypeORM in a AppModule but we do that once.
+
+- Repository pattern in TypeORM
+this means that each Entity we create has its own repository, the repository class available from TypeORM acts
+an abstraction over out data source and exposes a variety of useful methods to interact with the records stored
+in our database
+
+- Generate a migration in TypeORM
+  ~npx typeorm migration:create -n <migration_name>
+- Run migrations in TypeORM
+  ~npx typeorm migration:run
+- Rollback migrations in TypeORM
+  ~npx typeorm migration:revert
+- Generate migrations based on comparation vs DB and Entities
+  ~npx typeorm migration:generate -n <migration_name>
+
+- Injection Depency -
+In nestjs the the inyection depency is delegated an inversion of control contaier (IoC) in that case the IoC is the
+nestjs runtime system itself
+
+3 steps for injection depency happens
+-  add @injectable() decorator to the class that allows that the IoC handles the class and it mark the class as a 
+provider.
+- add the dependency a an attribute injected by the constructor method, that tell to nest the class need that dependency.
+- add the class as an item in the providers array field of the @module decorator to indicate to nest that the class
+is a provider for the module.
+
+
+When the IoC instanties the controller, it firts looks to see if there are any dependencies needed, when the IoC finds
+the dependencies it perfoms a lookup on the depency token that returns the depency class, asuming that the dependency has
+a singleton scope (default on nestjs) nestjs will create an instance of the depency class cache and return it, this 
+happens in the application bootstrap
+
+- Config Module
+Its a module that nestjs provide us to handle the env variables based on the environment.
+
+If you want to validate with a joi schema the env vars structure just pass the option validationSchema with a valid
+joi schema to the options for the config module.
+
+If you want to sent a custom file for the config app just create a config file and the use the option load and pass
+the route path of the created filer
+
+- Exception filters
+are responsible for handling and processing unhandled exceptions that might occur in our application
+
+- Pipes
+are typically used to handle two things "transformations" meaning to transform input data to de desired output and
+validation meaning to evaluate input data and if VALID leit pass through the pipe but if NOT VALID throwing and
+exception
+
+- Guards
+Determinate whether a given request meets certain conditions, like authentication, authorization, roles, ACLs, etc.
+and if the conditions are met the request will be allowed to accees the route.
+
+- Interceptors
+Have many useful capabilities inspired by the aspect oriented programming technique, interceptors 1 make it possible
+bind extra logic, before or after method execution 2 transform the result returned from a method 3 extend basic method
+behavior 4 and even completly override a method depending on specific conditions, for example handling something like
+"caching responses"
+- Interceptors make it possible for us to:
+  -bind extra logic before or after method execution
+  -transform the result returned from a method
+  -transform the exception thrown from a method
+  -extend basic method behavior
+  -or even completely overriding a method - depending on a specific condition (for example: doing something like caching
+  various responses)
+
+
+- generate a new filter
+   ~nest g filter common/filter/http-exception
+
+- generate a new guard
+  ~nest g guard common/guards/api-key
+
+  - generate a new interceptor
+  ~nest g interceptor common/interceptors/wrap-response
+
+- generate a nuw pipe
+  ~nest g pipe common/pipes/parse-int
+
+- Middleware
+Its a function that is called before the route handler and any other building blocks are processed. this includes
+interceptors, guards and pipes, middleware functions have accees to the Request and Response objects and
+are not spesically tied to any method, but rather to a specific route path.
+Middlewares can execute this tasks:
+  - Executing code.
+  - Making changes to the request and response objects.
+  - Ending the request / response cycle.
+  - Or even calling the next() function middleware function in the call stack.
+
+Whe working with middleware, if the current middleware function does not end the request / response cycle it must call
+the next method, wich passes the control to the next middleware function. Otherwise the request willl be left-handling
+and never complete.
+
+- generate a new middleware:
+  ~nest g middleware common/middlewares/logging
+
